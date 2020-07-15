@@ -4,7 +4,7 @@ import Display from "../Display/Display";
 
 const Calculator = () => (
     <div className="calculator-container">
-        <Display/>
+        <Display displayValue="0"/>
     </div>
 );
 
