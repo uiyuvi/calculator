@@ -1,24 +1,22 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import './Keypad.css';
+import Key from "../Key/Key";
 
 const numberKeys = (numbers) => (
     numbers.map(number => (
-            <div className="key-container number-key" key={number}>
-                <p className="key-value">{number}</p>
-            </div>
+            <Key key={number} keyType="number-key" keyValue={number}/>
         )
     )
 );
 
 const operatorKeys = (operators) => (
     operators.map(operator => (
-            <div className="key-container operator-key" key={operator}>
-                <p className="key-value">{operator}</p>
-            </div>
+            <Key key={operator} keyType="operator-key" keyValue={operator}/>
         )
     )
 );
+
 const Keypad = ({numbers, operators}) => (
     <div className="keypad-container">
         <div className="numbers-container">
@@ -28,9 +26,7 @@ const Keypad = ({numbers, operators}) => (
             {operatorKeys(operators)}
         </div>
         <div className="submit-container">
-            <div className="key-container submit-key">
-                <p className="key-value">=</p>
-            </div>
+            <Key keyType="submit-key" keyValue={"="}/>
         </div>
     </div>
 )

@@ -39,37 +39,3 @@
     cursor: pointer;
 }
 
-.number-key {
-    background-color: var(--number-key-color);
-    width: calc(100%/3);
-}
-
-.number-key:hover {
-    background-color: var(--number-key-color-hover);
-}
-
-.operator-key {
-    background-color: var(--operator-key-color);
-    width: 100%;
-}
-
-.operator-key:hover {
-    background-color: var(--operator-key-color-hover);
-}
-
-.submit-key {
-    background-color: var(--submit-key-color);
-    height: 100%;
-    width: 100%;
-}
-
-.submit-key:hover {
-    background-color: var(--submit-key-color-hover);
-}
-
-.key-value {
-    color: var(--key-text-color);
-    font-family: var(--main-font);
-    font-size: var(--key-text-size);
-    font-weight: var(--key-text-weight);
-}

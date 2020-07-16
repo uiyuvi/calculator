@@ -1,8 +1,19 @@
-import {render} from "@testing-library/react";
+import {render, within} from "@testing-library/react";
 import React from "react";
 import Keypad from "./Keypad";
+import Key from "../Key/Key";
+
+jest.mock('../Key/Key', () => {
+    return {
+        __esModule: true,
+        default: jest.fn(() => <div data-testid="mockedKey"/>)
+    };
+});
 
 describe('Keypad component', function () {
+    afterEach(() => {
+        Key.mockClear();
+    })
     test('should render a <div />', () => {
         const {container} = render(<Keypad
             numbers={[]}
@@ -18,35 +29,46 @@ describe('Keypad component', function () {
             operators={[]}
         />);
 
-        let displayElement = container.querySelectorAll('div.numbers-container div.key-container.number-key');
-        numbers.forEach((number, index) => {
-            expect(displayElement[index].querySelector('p.key-value').innerHTML).toEqual(number.toString());
-        });
+        let numberContainer = container.querySelector('div.numbers-container');
+        expect(numberContainer).toBeInTheDocument();
+        expect(within(numberContainer).getAllByTestId('mockedKey').length).toEqual(numbers.length);
+        numbers.map((number, index) =>
+            expect(Key.mock.calls[index][0]).toEqual({
+                "keyType": "number-key",
+                "keyValue": number
+            })
+        )
     })
 
     test('should display operators', () => {
-        let numbers = [0, 1, 2];
         let operators = ['+', '-', '*', '/'];
         const {container} = render(<Keypad
-            numbers={numbers}
+            numbers={[]}
             operators={operators}
         />);
 
-        let displayElement = container.querySelectorAll('div.operators-container div.key-container.operator-key');
-        operators.forEach((operator, index) => {
-            expect(displayElement[index].querySelector('p.key-value').innerHTML).toEqual(operator.toString());
-        });
+        let operatorContainer = container.querySelector('div.operators-container');
+        expect(operatorContainer).toBeInTheDocument();
+        expect(within(operatorContainer).getAllByTestId('mockedKey').length).toEqual(operators.length);
+        operators.map((operator, index) =>
+            expect(Key.mock.calls[index][0]).toEqual({
+                "keyType": "operator-key",
+                "keyValue": operator
+            })
+        )
     })
 
     test('should display submit key', () => {
-        let numbers = [0, 1, 2];
-        let operators = ['+', '-', '*', '/'];
         const {container} = render(<Keypad
-            numbers={numbers}
-            operators={operators}
+            numbers={[]}
+            operators={[]}
         />);
 
-        let displayElement = container.querySelector('div.submit-container div.key-container.submit-key');
-        expect(displayElement.querySelector('p.key-value').innerHTML).toEqual("=");
+        let submitContainer = container.querySelector('div.submit-container');
+        expect(submitContainer).toBeInTheDocument();
+        expect(Key.mock.calls[0][0]).toEqual({
+            "keyType": "submit-key",
+            "keyValue": "="
+        })
     })
 });
