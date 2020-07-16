@@ -10,6 +10,8 @@ app variables
   --number-key-color-hover: #3f3f3f;
   --operator-key-color: #545454;
   --operator-key-color-hover: #2a2a2a;
+  --submit-key-color: #d18800;
+  --submit-key-color-hover: #aa6e00;
 
   /* font */
   --main-font: 'Orbitron', sans-serif;

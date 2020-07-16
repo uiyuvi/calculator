@@ -27,6 +27,11 @@ const Keypad = ({numbers, operators}) => (
         <div className="operators-container">
             {operatorKeys(operators)}
         </div>
+        <div className="submit-container">
+            <div className="key-container submit-key">
+                <p className="key-value">=</p>
+            </div>
+        </div>
     </div>
 )
 

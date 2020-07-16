@@ -37,4 +37,16 @@ describe('Keypad component', function () {
             expect(displayElement[index].querySelector('p.key-value').innerHTML).toEqual(operator.toString());
         });
     })
+
+    test('should display submit key', () => {
+        let numbers = [0, 1, 2];
+        let operators = ['+', '-', '*', '/'];
+        const {container} = render(<Keypad
+            numbers={numbers}
+            operators={operators}
+        />);
+
+        let displayElement = container.querySelector('div.submit-container div.key-container.submit-key');
+        expect(displayElement.querySelector('p.key-value').innerHTML).toEqual("=");
+    })
 });
