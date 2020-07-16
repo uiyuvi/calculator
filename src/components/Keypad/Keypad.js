@@ -10,10 +10,22 @@ const numberKeys = (numbers) => (
         )
     )
 );
-const Keypad = ({numbers}) => (
+
+const operatorKeys = (operators) => (
+    operators.map(operator => (
+            <div className="key-container operator-key" key={operator}>
+                <p className="key-value">{operator}</p>
+            </div>
+        )
+    )
+);
+const Keypad = ({numbers, operators}) => (
     <div className="keypad-container">
         <div className="numbers-container">
             {numberKeys(numbers)}
+        </div>
+        <div className="operators-container">
+            {operatorKeys(operators)}
         </div>
     </div>
 )
@@ -21,5 +33,6 @@ const Keypad = ({numbers}) => (
 export default Keypad;
 
 Keypad.propTypes = {
-    numbers: PropTypes.array.isRequired
+    numbers: PropTypes.array.isRequired,
+    operators: PropTypes.array.isRequired
 }

@@ -8,6 +8,8 @@ app variables
   --display-background-color: #1d1f1f;
   --number-key-color: #696969;
   --number-key-color-hover: #3f3f3f;
+  --operator-key-color: #545454;
+  --operator-key-color-hover: #2a2a2a;
 
   /* font */
   --main-font: 'Orbitron', sans-serif;

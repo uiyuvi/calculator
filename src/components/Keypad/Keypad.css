@@ -15,6 +15,13 @@
     width: 75%;
 }
 
+.operators-container {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 25%;
+}
+
 .key-container {
     align-items: center;
     display: flex;
@@ -34,6 +41,15 @@
 
 .number-key:hover {
     background-color: var(--number-key-color-hover);
+}
+
+.operator-key {
+    background-color: var(--operator-key-color);
+    width: 100%;
+}
+
+.operator-key:hover {
+    background-color: var(--operator-key-color-hover);
 }
 
 .key-value {

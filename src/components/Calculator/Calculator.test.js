@@ -48,7 +48,8 @@ describe('Calculator', function () {
         expect(within(firstChild).getAllByTestId('mockedKeypad').length).toBe(1);
         let expectedContext = {};
         let expectedProps = {
-            numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            operators: ['+', '-', '*', '/']
         };
         expect(Keypad).toHaveBeenCalledWith(expectedProps, expectedContext);
     });
