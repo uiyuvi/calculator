@@ -49,7 +49,8 @@ describe('Calculator', function () {
         let expectedContext = {};
         let expectedProps = {
             numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            operators: ['+', '-', '*', '/']
+            operators: ['+', '-', '*', '/'],
+            updateDisplay: expect.any(Function)
         };
         expect(Keypad).toHaveBeenCalledWith(expectedProps, expectedContext);
     });
