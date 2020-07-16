@@ -2,6 +2,7 @@ import {render, within} from "@testing-library/react";
 import Calculator from "./Calculator";
 import React from "react";
 import Display from "../Display/Display";
+import Keypad from "../Keypad/Keypad";
 
 jest.mock('../Display/Display', () => {
     return {
@@ -10,9 +11,17 @@ jest.mock('../Display/Display', () => {
     };
 });
 
+jest.mock('../Keypad/Keypad', () => {
+    return {
+        __esModule: true,
+        default: jest.fn(() => <div data-testid="mockedKeypad"/>)
+    };
+});
+
 describe('Calculator', function () {
-    afterEach(()=>{
+    afterEach(() => {
         Display.mockClear();
+        Keypad.mockClear();
     });
 
     test('should render a <div />', () => {
@@ -25,9 +34,22 @@ describe('Calculator', function () {
         let firstChild = container.firstChild;
         expect(within(firstChild).getAllByTestId('mockedDisplay').length).toBe(1);
         let expectedProps = {
-            displayValue : "0"
+            displayValue: "0"
         };
         let context = {};
-        expect(Display).toHaveBeenCalledWith(expectedProps,context);
+        expect(Display).toHaveBeenCalledWith(expectedProps, context);
+    });
+
+
+    test('should render the Keypad Component', () => {
+        const {container} = render(<Calculator/>);
+
+        let firstChild = container.firstChild;
+        expect(within(firstChild).getAllByTestId('mockedKeypad').length).toBe(1);
+        let expectedContext = {};
+        let expectedProps = {
+            numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        };
+        expect(Keypad).toHaveBeenCalledWith(expectedProps, expectedContext);
     });
 });

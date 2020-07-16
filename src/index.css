@@ -6,18 +6,23 @@ app variables
   /* background colors */
   --calculator-background-color: #696969;
   --display-background-color: #1d1f1f;
+  --number-key-color: #696969;
+  --number-key-color-hover: #3f3f3f;
 
   /* font */
   --main-font: 'Orbitron', sans-serif;
 
   /* font colors */
   --display-text-color: #23e000;
+  --key-text-color: #d3d3d3;
 
   /* font sizes */
   --display-text-size: 4em;
+  --key-text-size: 3em;
 
   /* font weights */
   --display-text-weight: 400;
+  --key-text-weight: 700;
 
   /* calculator dimensions */
   --calculator-height: 72%;
@@ -26,6 +31,10 @@ app variables
   /* display dimensions */
   --display-height: 24%;
   --display-width: 92%;
+
+  /* keypad dimensions */
+  --keypad-height: 72%;
+  --keypad-width: 96%;
 }
 
 /*
@@ -36,6 +45,7 @@ media query for tablet or smaller screen
   :root {
     /* font sizes */
     --display-text-size: 10em;
+    --key-text-size: 3em;
     /* calculator dimensions */
     --calculator-height: 100%;
     --calculator-width: 100%;
