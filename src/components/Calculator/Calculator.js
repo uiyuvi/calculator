@@ -57,6 +57,10 @@ const Calculator = () => {
             calculatedValue = storedValue * displayValue
         }
 
+        if (selectedOperator === "/") {
+            calculatedValue = storedValue / displayValue
+        }
+
         setSelectedOperator("");
         setDisplayValue(calculatedValue.toString());
     };
