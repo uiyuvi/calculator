@@ -11,5 +11,5 @@ const Display = ({displayValue}) => (
 export default Display;
 
 Display.proptype = {
-    displayValue: PropTypes.number.isRequired
+    displayValue: PropTypes.string.isRequired
 }

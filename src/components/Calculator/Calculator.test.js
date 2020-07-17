@@ -1,9 +1,8 @@
-import {render, within} from "@testing-library/react";
+import {fireEvent, getByText, render, screen, within} from "@testing-library/react";
 import Calculator from "./Calculator";
 import React from "react";
 import Display from "../Display/Display";
 import Keypad from "../Keypad/Keypad";
-import {act} from 'react-dom/test-utils';
 
 jest.mock('../Display/Display', () => {
     return {
@@ -12,14 +11,32 @@ jest.mock('../Display/Display', () => {
     };
 });
 
+function mockKeyPad() {
+    return jest.fn(() => <div data-testid="mockedKeypad"/>);
+}
+
 jest.mock('../Keypad/Keypad', () => {
     return {
         __esModule: true,
-        default: jest.fn(() => <div data-testid="mockedKeypad"/>)
+        default: mockKeyPad()
     };
 });
 
+const restoreOriginalKeyPad = () => {
+    Keypad.mockImplementation(
+        require.requireActual('../Keypad/Keypad').default
+    )
+};
+
+const mockKeypadAfterRestore = () => {
+    Keypad.mockImplementation(jest.fn(() => <div data-testid="mockedKeypad"/>))
+};
+
 describe('Calculator', function () {
+    beforeEach(() => {
+        jest.resetModules();
+    });
+
     afterEach(() => {
         Display.mockClear();
         Keypad.mockClear();
@@ -37,30 +54,32 @@ describe('Calculator', function () {
             let firstChild = container.firstChild;
             expect(within(firstChild).getAllByTestId('mockedDisplay').length).toBe(1);
             let expectedProps = {
-                displayValue: 0
+                displayValue: '0'
             };
             let context = {};
             expect(Display).toHaveBeenCalledWith(expectedProps, context);
         });
 
         test('should update the Component', () => {
-            render(<Calculator/>);
+            restoreOriginalKeyPad();
+            const {container} = render(<Calculator/>);
 
 
             let expectedProps = {
-                displayValue: 0
+                displayValue: '0'
             };
             let context = {};
             expect(Display).toHaveBeenCalledWith(expectedProps, context);
 
-            act(() => {
-                Keypad.mock.calls[0][0].updateDisplay(2);
-            });
+            fireEvent.click(getByText(container, /2/i))
+            fireEvent.click(getByText(container, /3/i))
+            fireEvent.click(getByText(container, /4/i))
 
             expectedProps = {
-                displayValue: 2
+                displayValue: '234'
             };
             expect(Display).toHaveBeenCalledWith(expectedProps, context);
+            mockKeypadAfterRestore();
         });
     });
 
