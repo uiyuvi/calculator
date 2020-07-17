@@ -48,9 +48,15 @@ const Calculator = () => {
         if (selectedOperator === "+") {
             calculatedValue = storedValue + displayValue
         }
+
         if (selectedOperator === "-") {
             calculatedValue = storedValue - displayValue
         }
+
+        if (selectedOperator === "*") {
+            calculatedValue = storedValue * displayValue
+        }
+
         setSelectedOperator("");
         setDisplayValue(calculatedValue.toString());
     };

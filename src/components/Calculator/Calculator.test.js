@@ -1,4 +1,4 @@
-import {fireEvent, getByText, render, screen, within} from "@testing-library/react";
+import {fireEvent, getByText, render, within} from "@testing-library/react";
 import Calculator from "./Calculator";
 import React from "react";
 import Display from "../Display/Display";
@@ -261,6 +261,33 @@ describe('Calculator', function () {
 
                 expectedProps = {
                     displayValue: '47'
+                };
+                recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+            })
+
+            test('should multiply numbers',()=>{
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
+                let expectedProps;
+                let context = {};
+
+                fireEvent.click(getByText(container, /5/i))
+                fireEvent.click(getByText(container, /0/i))
+                expectedProps = {
+                    displayValue: '50'
+                };
+
+                let recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+
+                fireEvent.click(getByText(container, /\*/i))
+                fireEvent.click(getByText(container, /3/i))
+
+                fireEvent.click(getByText(container, /=/i))
+
+                expectedProps = {
+                    displayValue: '150'
                 };
                 recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
                 expect(recentDisplayMockCall).toEqual(expectedProps,context);
