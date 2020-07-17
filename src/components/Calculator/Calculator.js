@@ -4,16 +4,27 @@ import Display from "../Display/Display";
 import Keypad from "../Keypad/Keypad";
 
 const Calculator = () => {
-    let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let numbers = ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0','ce'];
     let operators = ['+', '-', '*', '/'];
-    let [displayValue, setDisplayValue] = useState(numbers[0].toString());
+    let [displayValue, setDisplayValue] = useState('0');
 
     const updateDisplay = value => {
         if(displayValue === '0'){
-            setDisplayValue(value.toString())
+            setDisplayValue(value)
             return;
         }
-        setDisplayValue(displayValue+''+value);
+
+        if(value === "." && displayValue.includes(".")){
+            return;
+        }
+
+        if(value === "ce"){
+            let removeLastCharFromDisplayValue = displayValue.substr(0, displayValue.length - 1);
+            setDisplayValue(removeLastCharFromDisplayValue)
+            return;
+        }
+
+        setDisplayValue(displayValue+value);
     };
 
     return (
