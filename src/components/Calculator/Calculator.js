@@ -14,7 +14,7 @@ const Calculator = () => {
 
     return (
         <div className="calculator-container">
-            <Display displayValue={displayValue.toString()}/>
+            <Display displayValue={displayValue}/>
             <Keypad numbers={numbers} operators={operators} updateDisplay={(value)=>updateDisplay(value)}/>
         </div>
     );
