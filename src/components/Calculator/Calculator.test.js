@@ -104,7 +104,6 @@ describe('Calculator', function () {
             expect(recentDisplayMockCall).toEqual(expectedProps,{});
         });
 
-
         test('should remove last entered value on selecting `ce` key', () => {
             restoreOriginalKeyPad();
             const {container} = render(<Calculator/>);
@@ -128,6 +127,45 @@ describe('Calculator', function () {
 
             expectedProps = {
                 displayValue: '5'
+            };
+
+            recentDisplayMockCall = Display.mock.calls.pop()[0];
+            expect(recentDisplayMockCall).toEqual(expectedProps,{});
+        });
+
+
+        test('should display 0 when all characters removed with `ce` key', () => {
+            restoreOriginalKeyPad();
+            const {container} = render(<Calculator/>);
+
+            let expectedProps = {
+                displayValue: '0'
+            };
+            let context = {};
+            expect(Display).toHaveBeenCalledWith(expectedProps, context);
+
+            fireEvent.click(getByText(container, /5/i))
+            fireEvent.click(getByText(container, /0/i))
+            expectedProps = {
+                displayValue: '50'
+            };
+
+            let recentDisplayMockCall = Display.mock.calls.pop()[0];
+            expect(recentDisplayMockCall).toEqual(expectedProps,{});
+
+            fireEvent.click(getByText(container, /ce/i))
+
+            expectedProps = {
+                displayValue: '5'
+            };
+
+            recentDisplayMockCall = Display.mock.calls.pop()[0];
+            expect(recentDisplayMockCall).toEqual(expectedProps,{});
+
+            fireEvent.click(getByText(container, /ce/i))
+
+            expectedProps = {
+                displayValue: '0'
             };
 
             recentDisplayMockCall = Display.mock.calls.pop()[0];

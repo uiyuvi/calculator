@@ -8,19 +8,24 @@ const Calculator = () => {
     let operators = ['+', '-', '*', '/'];
     let [displayValue, setDisplayValue] = useState('0');
 
-    const updateDisplay = value => {
-        if(displayValue === '0'){
-            setDisplayValue(value)
-            return;
-        }
+    const removeRecentValueFromDisplayValue = () => displayValue.substr(0, displayValue.length - 1);
 
+    const updateDisplay = value => {
         if(value === "." && displayValue.includes(".")){
             return;
         }
 
         if(value === "ce"){
-            let removeLastCharFromDisplayValue = displayValue.substr(0, displayValue.length - 1);
-            setDisplayValue(removeLastCharFromDisplayValue)
+            let processedDisplayValue = removeRecentValueFromDisplayValue();
+            if(processedDisplayValue === ""){
+                processedDisplayValue = "0";
+            }
+            setDisplayValue(processedDisplayValue)
+            return;
+        }
+
+        if(displayValue === '0'){
+            setDisplayValue(value)
             return;
         }
 
