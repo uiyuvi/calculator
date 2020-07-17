@@ -47,6 +47,22 @@ describe('Calculator', function () {
         expect(container.firstChild.classList.contains('calculator-container')).toBe(true)
     });
 
+    test('should render the Keypad Component', () => {
+        const {container} = render(<Calculator/>);
+
+        let firstChild = container.firstChild;
+        expect(within(firstChild).getAllByTestId('mockedKeypad').length).toBe(1);
+        let expectedContext = {};
+        let expectedProps = {
+            numbers: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0','ce'],
+            operators: ['+', '-', '*', '/'],
+            updateDisplay: expect.any(Function),
+            setOperator: expect.any(Function),
+            calculate: expect.any(Function)
+        };
+        expect(Keypad).toHaveBeenCalledWith(expectedProps, expectedContext);
+    });
+
     describe('Display component', function () {
         afterAll(()=>{
             mockKeypadAfterRestore();
@@ -84,106 +100,144 @@ describe('Calculator', function () {
             expect(recentDisplayMockCall).toEqual(expectedProps,context);
         });
 
-        test('should prevent multiple instances of "." in displayValue', () => {
-            restoreOriginalKeyPad();
-            const {container} = render(<Calculator/>);
+        describe('numbers scenarios', function () {
+            test('should prevent multiple instances of "." in displayValue', () => {
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
 
-            let expectedProps = {
-                displayValue: '0'
-            };
-            let context = {};
-            expect(Display).toHaveBeenCalledWith(expectedProps, context);
+                let expectedProps = {
+                    displayValue: '0'
+                };
+                let context = {};
+                expect(Display).toHaveBeenCalledWith(expectedProps, context);
 
-            fireEvent.click(getByText(container, /\./i))
-            fireEvent.click(getByText(container, /\./i))
+                fireEvent.click(getByText(container, /\./i))
+                fireEvent.click(getByText(container, /\./i))
 
-            expectedProps = {
-                displayValue: '.'
-            };
-            let recentDisplayMockCall = Display.mock.calls.pop()[0];
-            expect(recentDisplayMockCall).toEqual(expectedProps,{});
+                expectedProps = {
+                    displayValue: '.'
+                };
+                let recentDisplayMockCall = Display.mock.calls.pop()[0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,{});
+            });
+
+            test('should remove last entered value on selecting `ce` key', () => {
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
+
+                let expectedProps = {
+                    displayValue: '0'
+                };
+                let context = {};
+                expect(Display).toHaveBeenCalledWith(expectedProps, context);
+
+                fireEvent.click(getByText(container, /5/i))
+                fireEvent.click(getByText(container, /0/i))
+                expectedProps = {
+                    displayValue: '50'
+                };
+
+                let recentDisplayMockCall = Display.mock.calls.pop()[0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+
+                fireEvent.click(getByText(container, /ce/i))
+
+                expectedProps = {
+                    displayValue: '5'
+                };
+                recentDisplayMockCall = Display.mock.calls.pop()[0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+            });
+
+            test('should display 0 when all characters removed with `ce` key', () => {
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
+
+                let expectedProps = {
+                    displayValue: '0'
+                };
+                let context = {};
+                expect(Display).toHaveBeenCalledWith(expectedProps, context);
+
+                fireEvent.click(getByText(container, /5/i))
+                fireEvent.click(getByText(container, /0/i))
+                expectedProps = {
+                    displayValue: '50'
+                };
+
+                let recentDisplayMockCall = Display.mock.calls.pop()[0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,{});
+
+                fireEvent.click(getByText(container, /ce/i))
+
+                expectedProps = {
+                    displayValue: '5'
+                };
+
+                recentDisplayMockCall = Display.mock.calls.pop()[0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,{});
+
+                fireEvent.click(getByText(container, /ce/i))
+
+                expectedProps = {
+                    displayValue: '0'
+                };
+
+                recentDisplayMockCall = Display.mock.calls.pop()[0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,{});
+            });
         });
+        describe('operators scenarios', function () {
+            test('should display 0 when any of the operator selected',()=>{
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
+                let expectedProps;
+                let context = {};
 
-        test('should remove last entered value on selecting `ce` key', () => {
-            restoreOriginalKeyPad();
-            const {container} = render(<Calculator/>);
+                fireEvent.click(getByText(container, /5/i))
+                fireEvent.click(getByText(container, /0/i))
+                expectedProps = {
+                    displayValue: '50'
+                };
 
-            let expectedProps = {
-                displayValue: '0'
-            };
-            let context = {};
-            expect(Display).toHaveBeenCalledWith(expectedProps, context);
+                let recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
 
-            fireEvent.click(getByText(container, /5/i))
-            fireEvent.click(getByText(container, /0/i))
-            expectedProps = {
-                displayValue: '50'
-            };
+                fireEvent.click(getByText(container, /\+/i))
 
-            let recentDisplayMockCall = Display.mock.calls.pop()[0];
-            expect(recentDisplayMockCall).toEqual(expectedProps,{});
+                expectedProps = {
+                    displayValue: '0'
+                };
+                recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+            })
 
-            fireEvent.click(getByText(container, /ce/i))
+            test('should sum the numbers',()=>{
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
+                let expectedProps;
+                let context = {};
 
-            expectedProps = {
-                displayValue: '5'
-            };
+                fireEvent.click(getByText(container, /5/i))
+                fireEvent.click(getByText(container, /0/i))
+                expectedProps = {
+                    displayValue: '50'
+                };
 
-            recentDisplayMockCall = Display.mock.calls.pop()[0];
-            expect(recentDisplayMockCall).toEqual(expectedProps,{});
+                let recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+
+                fireEvent.click(getByText(container, /\+/i))
+                fireEvent.click(getByText(container, /3/i))
+
+                fireEvent.click(getByText(container, /=/i))
+
+                expectedProps = {
+                    displayValue: '53'
+                };
+                recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+            })
         });
-
-
-        test('should display 0 when all characters removed with `ce` key', () => {
-            restoreOriginalKeyPad();
-            const {container} = render(<Calculator/>);
-
-            let expectedProps = {
-                displayValue: '0'
-            };
-            let context = {};
-            expect(Display).toHaveBeenCalledWith(expectedProps, context);
-
-            fireEvent.click(getByText(container, /5/i))
-            fireEvent.click(getByText(container, /0/i))
-            expectedProps = {
-                displayValue: '50'
-            };
-
-            let recentDisplayMockCall = Display.mock.calls.pop()[0];
-            expect(recentDisplayMockCall).toEqual(expectedProps,{});
-
-            fireEvent.click(getByText(container, /ce/i))
-
-            expectedProps = {
-                displayValue: '5'
-            };
-
-            recentDisplayMockCall = Display.mock.calls.pop()[0];
-            expect(recentDisplayMockCall).toEqual(expectedProps,{});
-
-            fireEvent.click(getByText(container, /ce/i))
-
-            expectedProps = {
-                displayValue: '0'
-            };
-
-            recentDisplayMockCall = Display.mock.calls.pop()[0];
-            expect(recentDisplayMockCall).toEqual(expectedProps,{});
-        });
-    });
-
-    test('should render the Keypad Component', () => {
-        const {container} = render(<Calculator/>);
-
-        let firstChild = container.firstChild;
-        expect(within(firstChild).getAllByTestId('mockedKeypad').length).toBe(1);
-        let expectedContext = {};
-        let expectedProps = {
-            numbers: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0','ce'],
-            operators: ['+', '-', '*', '/'],
-            updateDisplay: expect.any(Function)
-        };
-        expect(Keypad).toHaveBeenCalledWith(expectedProps, expectedContext);
     });
 });
