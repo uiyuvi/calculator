@@ -238,6 +238,33 @@ describe('Calculator', function () {
                 recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
                 expect(recentDisplayMockCall).toEqual(expectedProps,context);
             })
+
+            test('should difference the numbers',()=>{
+                restoreOriginalKeyPad();
+                const {container} = render(<Calculator/>);
+                let expectedProps;
+                let context = {};
+
+                fireEvent.click(getByText(container, /5/i))
+                fireEvent.click(getByText(container, /0/i))
+                expectedProps = {
+                    displayValue: '50'
+                };
+
+                let recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+
+                fireEvent.click(getByText(container, /-/i))
+                fireEvent.click(getByText(container, /3/i))
+
+                fireEvent.click(getByText(container, /=/i))
+
+                expectedProps = {
+                    displayValue: '47'
+                };
+                recentDisplayMockCall = Display.mock.calls[Display.mock.calls.length-1][0];
+                expect(recentDisplayMockCall).toEqual(expectedProps,context);
+            })
         });
     });
 });

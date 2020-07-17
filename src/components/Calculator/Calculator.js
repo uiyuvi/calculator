@@ -46,7 +46,10 @@ const Calculator = () => {
         storedValue = parseFloat(storedValue);
         let calculatedValue = displayValue
         if (selectedOperator === "+") {
-            calculatedValue = displayValue + storedValue
+            calculatedValue = storedValue + displayValue
+        }
+        if (selectedOperator === "-") {
+            calculatedValue = storedValue - displayValue
         }
         setSelectedOperator("");
         setDisplayValue(calculatedValue.toString());
