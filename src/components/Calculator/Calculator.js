@@ -61,6 +61,10 @@ const Calculator = () => {
             calculatedValue = storedValue / displayValue
         }
 
+        if(calculatedValue.toString() === 'Infinity'){
+            calculatedValue = 0;
+        }
+
         setSelectedOperator("");
         setDisplayValue(calculatedValue.toString());
     };
