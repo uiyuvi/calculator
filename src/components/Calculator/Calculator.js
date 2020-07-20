@@ -42,23 +42,23 @@ const Calculator = () => {
 
     const calculate = () => {
         // parse strings for operations
-        displayValue = parseFloat(displayValue);
-        storedValue = parseFloat(storedValue);
-        let calculatedValue = displayValue
+        let displayValueNumber = parseFloat(displayValue);
+        let storedValueNumber = parseFloat(storedValue);
+        let calculatedValue = displayValueNumber
         if (selectedOperator === "+") {
-            calculatedValue = storedValue + displayValue
+            calculatedValue = storedValueNumber + displayValueNumber
         }
 
         if (selectedOperator === "-") {
-            calculatedValue = storedValue - displayValue
+            calculatedValue = storedValueNumber - displayValueNumber
         }
 
         if (selectedOperator === "*") {
-            calculatedValue = storedValue * displayValue
+            calculatedValue = storedValueNumber * displayValueNumber
         }
 
         if (selectedOperator === "/") {
-            calculatedValue = storedValue / displayValue
+            calculatedValue = storedValueNumber / displayValueNumber
         }
 
         if(calculatedValue.toString() === 'Infinity'){
